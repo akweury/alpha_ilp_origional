@@ -20,7 +20,7 @@ class DataUtils(object):
     """
 
     def __init__(self, lark_path, lang_base_path, dataset_type='kandinsky', dataset='twopairs'):
-        self.base_path = lang_base_path + dataset_type + '/' + dataset + '/'
+        self.base_path =lang_base_path / dataset_type / dataset
         with open(lark_path, encoding="utf-8") as grammar:
             self.lp_atom = Lark(grammar.read(), start="atom")
         with open(lark_path, encoding="utf-8") as grammar:
@@ -130,8 +130,9 @@ class DataUtils(object):
     def load_language(self):
         """Load language, background knowledge, and clauses from files.
         """
-        preds = self.load_preds(self.base_path + 'preds.txt') + \
-            self.load_neural_preds(self.base_path + 'neural_preds.txt')
-        consts = self.load_consts(self.base_path + 'consts.txt')
+        preds = self.load_preds(str(self.base_path / 'preds.txt'))
+        preds += self.load_neural_preds(str(self.base_path / 'neural_preds.txt'))
+        consts = self.load_consts(str(self.base_path / 'consts.txt'))
+
         lang = Language(preds, [], consts)
         return lang
